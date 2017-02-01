@@ -25,3 +25,5 @@
 
 - Dont give too many options to edit subresources. Favor pushing the whole
   hierarchy in a single step.
+
+- TODO: read database url from the environment.

@@ -2,15 +2,21 @@
 
 require('dotenv').config();
 
+const model = require('./model');
+const userModel = new model.User('addr','Some guy');
+
 const mongoose = require('mongoose');
 // http://mongoosejs.com/docs/promises.html
 mongoose.Promise = require('bluebird');
 
 const db = mongoose.createConnection('localhost', 'aprobar');
 
-const model = require('./model');
+let userSchema = new mongoose.Schema({
+    email: String,
+    name: String
+});
 
-const user = new model.User('addr','Some guy');
+let User = db.model('User',userSchema);
 
 const express = require('express');
 
