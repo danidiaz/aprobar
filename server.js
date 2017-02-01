@@ -8,6 +8,10 @@ const express = require('express');
 
 const app = express();
 
+//
+const user = new model.User('addr','Some guy');
+//
+
 app.get('/',(req,res) => {
     res.send('foo');
 });
