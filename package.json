@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/danidiaz/aprobar#readme",
   "dependencies": {
-    "express": "^4.14.1"
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "mongoose": "^4.8.1"
   }
 }
