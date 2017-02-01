@@ -1,5 +1,9 @@
 'use strict'
 
+require('dotenv').config();
+
+const model = require('./model');
+
 const express = require('express');
 
 const app = express();
