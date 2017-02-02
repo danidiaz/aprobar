@@ -1,5 +1,7 @@
 'use strict'
 
+const joi = require('joi');
+
 module.exports.User = class {
     constructor(email,name,isAdmin) {
         this.email = email;

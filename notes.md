@@ -48,4 +48,3 @@
 
 - Do the joi schema verifications belong to the model or to the views?
 
-
