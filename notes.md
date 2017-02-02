@@ -26,4 +26,12 @@
 - Dont give too many options to edit subresources. Favor pushing the whole
   hierarchy in a single step.
 
-- TODO: read database url from the environment.
+- Reading the body of a request as JSON
+  http://stackoverflow.com/a/24635296/1364288
+  https://www.npmjs.com/package/body-parser
+
+- TODO: push a request body into the db (as an user) with post, get it out with
+  get. Start small.
+- TODO: add a "nukedb" script to npm.
+
+
