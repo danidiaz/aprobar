@@ -40,6 +40,8 @@
 - always put the requires at the beginning of the file. Use the name of the
   module for the var.
 
+- Use joi for view schemas?
+
 - TODO: push a request body into the db (as an user) with post, get it out with
   get. Start small.
 - TODO: add a "nukedb" script to npm.

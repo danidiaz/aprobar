@@ -1,30 +1,15 @@
 'use strict'
 
-require('dotenv').config();
-
-const mongoose = (function () { 
-    const m = require('mongoose');
-    // http://mongoosejs.com/docs/promises.html
-    m.Promise = require('bluebird');
-    return m;
-})();
-
-const db = (function () {
-    const mongo_host = process.env.APROBAR_MONGO_HOST;
-    const mongo_db = process.env.APROBAR_MONGO_DB;
-    return mongoose.createConnection(mongo_host, mongo_db);
-})();
+const express = require('express');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
 
 const model = require('./model');
 
-const app = (function () {
-    const express = require('express');
-    const bodyParser = require('body-parser');
-    const app = express();
-    // http://stackoverflow.com/a/24635296/1364288
-    app.use(bodyParser.json());
-    return app;
-})();
+dotenv.config();
+
+const app = express();
+app.use(bodyParser.json());
 
 app.get('/',(req,res) => {
     res.send('foo');
