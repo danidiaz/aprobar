@@ -16,7 +16,6 @@ const db = (function () {
 })();
 
 const model = require('./model');
-let User = db.model('User',model.userSchema);
 
 const app = (function () {
     const express = require('express');
