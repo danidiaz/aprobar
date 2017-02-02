@@ -46,6 +46,6 @@
   get. Start small.
 - TODO: add a "nukedb" script to npm.
 
-
+- Do the joi schema verifications belong to the model or to the views?
 
 
