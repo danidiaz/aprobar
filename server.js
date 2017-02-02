@@ -25,7 +25,7 @@ const app = (function () {
     // http://stackoverflow.com/a/24635296/1364288
     app.use(bodyParser.json());
     return app;
-});
+})();
 
 app.get('/',(req,res) => {
     res.send('foo');
