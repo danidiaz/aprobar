@@ -30,8 +30,13 @@
   http://stackoverflow.com/a/24635296/1364288
   https://www.npmjs.com/package/body-parser
 
+- Mongoose and UUIDs
+    - https://github.com/Automattic/mongoose/issues/2738
+
 - TODO: push a request body into the db (as an user) with post, get it out with
   get. Start small.
 - TODO: add a "nukedb" script to npm.
+
+
 
 
