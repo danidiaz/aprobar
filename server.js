@@ -6,18 +6,17 @@ const dotenv = require('dotenv');
 const Waterline = require('waterline');
 const mongoAdapter = require('sails-mongo');
 
-const model = require('./model');
+const models = require('./models');
+const persistence = require('./persistence');
+const views = require('./views');
 
 dotenv.config();
 
 const waterline = new Waterline();
-const waterlineModels = Symbol('waterlineModels');
-const waterlineConnections = Symbol('waterlineConnections');
 const config = (() => {
 	const mongo_host = process.env.APROBAR_MONGO_HOST;
     const mongo_db = process.env.APROBAR_MONGO_DB;
     const mongo_port = parseInt(process.env.APROBAR_MONGO_PORT);
-
 	if (isNaN(mongo_port)) {
 		throw 'Invalid port format.'
 	}
@@ -36,7 +35,10 @@ const config = (() => {
 		}
 	}
 })();
-
+persistence.createCollections('mongo').map((collection) => {
+	// https://github.com/balderdashy/waterline-docs/blob/master/introduction/getting-started.md
+	waterline.loadCollection(collection);
+});
 
 const app = express();
 app.use(bodyParser.json());
@@ -48,8 +50,8 @@ app.get('/',(req,res) => {
 waterline.initialize(config, function(err, models) {
 	if(err) throw err;
 
-	app[waterlineModels] = models.collections;
-	app[waterlineConnections] = models.connections;
+	app[persistence.symbols.models] = models.collections;
+	app[persistence.symbols.connections] = models.connections;
 
 	app.listen(8000, () => {
 		console.log('started!');
