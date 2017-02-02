@@ -33,6 +33,13 @@
 - Mongoose and UUIDs
     - https://github.com/Automattic/mongoose/issues/2738
 
+- express api docs: https://expressjs.com/en/api.html
+
+- perhaps prefer indirect recursion for datatypes when saving to the db?
+
+- always put the requires at the beginning of the file. Use the name of the
+  module for the var.
+
 - TODO: push a request body into the db (as an user) with post, get it out with
   get. Start small.
 - TODO: add a "nukedb" script to npm.
