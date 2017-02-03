@@ -36,3 +36,17 @@ module.exports.symbols = {
     connections : Symbol('waterlineConnections')
 };
 
+function addUser(models,user) {
+    // https://github.com/balderdashy/waterline-docs/blob/master/introduction/getting-started.md
+    // This particula model can be passed as-is, but remember other models
+    // might require some massaging. 
+    console.log('foo!');
+    // console.log(models);
+    console.log(models.user);
+    console.log(user);
+    return models.user.create(user); 
+}
+
+module.exports.user = {
+    add : addUser 
+}

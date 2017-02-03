@@ -57,11 +57,14 @@ app.post('/users',(req,res) => {
     models
         .User.validateAndBuild(req.body)
         .then((user) => {
-            res.json(views.user.render(user));
+            // https://expressjs.com/en/api.html#req
+            persistence.user.add(req.app[persistence.symbols.models],user);
+        }).then(() => {
+            res.json({ message : 'User created successfully.' });
         }).catch((e) => {
             console.log(e);
             // http://www.restapitutorial.com/httpstatuscodes.html
-            res.status(400).json({ error : 'invalid request' });
+            res.status(400).json({ error : 'Invalid request.' });
         });
 });
 
