@@ -53,6 +53,8 @@
 - Investigate usefult express middleware like body-parser.
 
 - https://youtu.be/OlapNW9Jc8s?t=1570
-  ^ describes the "Router" approach to separate routes. Use it!
+  describes the "Router" approach to separate routes. Use it!
+  https://expressjs.com/en/api.html#router
+
 
 
