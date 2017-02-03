@@ -52,10 +52,19 @@ function createUser(collections,user) {
 function findUserByGuid(collections,guid) {
     return collections
                 .user.findOneByGuid(guid)
-                .then((user) => new models.User(user));
+                .then((user) => new models.User(user,user.guid));
+}
+
+function findAllUsers(collections) {
+    return collections
+                .user.find()
+                .then((userList) => {
+                    return userList.map((user) => new models.User(user,user.guid));
+                });
 }
 
 module.exports.user = {
     create : createUser, 
-    findByGuid : findUserByGuid 
+    findByGuid : findUserByGuid,
+	findAll : findAllUsers
 }

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const Waterline = require('waterline');
 const mongoAdapter = require('sails-mongo');
+const url = require('url');
 
 const models = require('./models');
 const persistence = require('./persistence');
@@ -18,7 +19,7 @@ const config = (() => {
     const mongo_db = process.env.APROBAR_MONGO_DB;
     const mongo_port = parseInt(process.env.APROBAR_MONGO_PORT);
 	if (isNaN(mongo_port)) {
-		throw 'Invalid port format.'
+		throw 'Invalid port format for mongo.'
 	}
 
 	return { 
@@ -40,17 +41,43 @@ persistence.createCollections('mongo').map((collection) => {
 	waterline.loadCollection(collection);
 });
 
+const aprobar_host = process.env.APROBAR_HOST;
+const aprobar_port = parseInt(process.env.APROBAR_PORT);
+if (isNaN(aprobar_port)) {
+	throw 'Invalid port format.'
+}
+const fullUrl = (function(host,port) {
+	return function(req,pathname) {
+	  return url.format({
+		protocol: req.protocol,
+		hostname: host,
+		port: port,
+		pathname: pathname
+	  })
+	}
+})(aprobar_host,aprobar_port);
+
 // https://expressjs.com/en/api.html
 const app = express();
 // https://github.com/expressjs/body-parser
 app.use(bodyParser.json());
 
+function makeUserLink(req,user) {
+	return { link : fullUrl(req,'/users/'+user.guid) };
+}
+
 app.get('/users',(req,res) => {
-    res.send('foos');
+    persistence.user.findAll(req.app[persistence.symbols.collections])
+                    .then((userList) => {
+                        res.json(userList.map((user) => 
+											  makeUserLink(req,user)));
+                    }).catch((e) => {
+                        console.log(e);
+                        res.status(400).json({ message : 'Invalid request.' });
+                    });
 });
 
 app.get('/users/:userGuid',(req,res) => {
-    console.log(req.app[persistence.symbols.collections].user);
     persistence.user.findByGuid(req.app[persistence.symbols.collections],
                                 req.params.userGuid)
                     .then((user) => {
@@ -63,11 +90,10 @@ app.get('/users/:userGuid',(req,res) => {
 
 app.post('/users',(req,res) => {
     function returnCreated(user) {
-        const link = '/users/'+user.guid;
         res.status(201)
            .location(link)
            .json({ message : 'User created successfully.',
-                   link : link
+                   link : makeUserLink(req,user)
                  });
     }
     models
@@ -90,7 +116,7 @@ waterline.initialize(config, function(err, persistModels) {
 	app[persistence.symbols.collections] = persistModels.collections;
 	app[persistence.symbols.connections] = persistModels.connections;
 
-	app.listen(8000, () => {
+	app.listen(aprobar_port, () => {
 		console.log('started!');
 	});
 });

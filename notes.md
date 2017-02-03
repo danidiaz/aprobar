@@ -82,4 +82,10 @@
 
 - http://stackoverflow.com/questions/14943607/how-to-set-the-location-response-http-header-in-express-framework
 
+- "However, if you are building the server and you expect other people to write client code then they will love you much more if you provide complete URIs."
+  http://stackoverflow.com/a/2240380/1364288
+
+- "found it a bit of a PITA to get the requested url. I can't believe there's not an easier way in express. Should just be req.requested_url"
+  http://corpus.hubwiz.com/2/node.js/10183291.html
+
 
