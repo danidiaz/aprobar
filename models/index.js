@@ -37,4 +37,4 @@ module.exports.User = class {
                         return new User(dto,guid);
                    });
 	}
-}
+};

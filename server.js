@@ -40,11 +40,21 @@ persistence.createCollections('mongo').map((collection) => {
 	waterline.loadCollection(collection);
 });
 
+// https://expressjs.com/en/api.html
 const app = express();
+// https://github.com/expressjs/body-parser
 app.use(bodyParser.json());
 
-app.get('/',(req,res) => {
+app.get('/users',(req,res) => {
+    res.send('foos');
+});
+
+app.get('/users/:userId',(req,res) => {
     res.send('foo');
+});
+
+app.post('/users',(req,res) => {
+    res.json({ foo: 'foopost'});
 });
 
 waterline.initialize(config, function(err, models) {

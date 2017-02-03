@@ -34,5 +34,5 @@ module.exports.createCollections = function(connectionName) {
 module.exports.symbols = { 
     models : Symbol('waterlineModels'),
     connections : Symbol('waterlineConnections')
-}
+};
 

@@ -48,3 +48,11 @@
 
 - Do the joi schema verifications belong to the model or to the views?
 
+- Provide HTTP output for GET actions, if you have time.
+
+- Investigate usefult express middleware like body-parser.
+
+- https://youtu.be/OlapNW9Jc8s?t=1570
+  ^ describes the "Router" approach to separate routes. Use it!
+
+
