@@ -4,7 +4,7 @@ function renderUser(user) {
     return { 
       email : user.email,
       name : user.name,
-      isAdmin : user.admin
+      isAdmin : user.isAdmin
     };
 }
 

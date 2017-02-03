@@ -10,7 +10,8 @@ function validateWith(validator,dto) {
 	return promisified(dto);
 }
 
-module.exports.User = class {
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class#Named_class_expressions
+module.exports.User = class User {
     constructor(dto,guid) {
         this.guid = guid
         this.email = dto.email;
@@ -20,20 +21,20 @@ module.exports.User = class {
 
     // https://www.npmjs.com/package/joi
     static get validator() {
-        return Joi.object().keys({
-			email: Joi.string().alphanum().min(4).max(20).required(),
-			name: Joi.string().alphanum().min(4).max(20).required(),
-			isAdmin: Joi.boolean().required()
+        return joi.object().keys({
+			email: joi.string().email().required(),
+			name: joi.string().alphanum().min(3).max(90).required(),
+			isAdmin: joi.boolean().required()
 		});
     }
 
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Static_methods
-	static validate(dto) { validateWith(this.validator,dto); }
+	static validate(dto) { return validateWith(this.validator,dto); }
 
-	static validateAndBuild(dto,preexistingGUID) {
+	static validateAndBuild(dto,preexistingGUID = null) {
         return this.validate(dto)
                    .then((dto) => {
-		                const guid = preexistingGUID || uuidV4.uuid();
+		                const guid = preexistingGUID || uuidV4();
                         return new User(dto,guid);
                    });
 	}

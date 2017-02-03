@@ -65,3 +65,15 @@
 
 - [best practices](https://expressjs.com/en/advanced/best-practice-performance.html)
 
+- "Since you're using bluebird for promises, you actually don't need a catch
+  statement after every function. You can chain all your thens together, and
+  then close the whole thing off with a single catch."
+  http://stackoverflow.com/questions/24619444/chaining-promises-with-then-and-catch
+  http://stackoverflow.com/questions/34234703/how-to-decide-which-promise-does-a-then-catch-according-too
+
+- ['after a catch the chain is restored'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch)
+
+- Remember that there are named class expressions, just as there are named
+  function expressions.
+
+

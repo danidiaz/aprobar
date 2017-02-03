@@ -54,7 +54,15 @@ app.get('/users/:userId',(req,res) => {
 });
 
 app.post('/users',(req,res) => {
-    res.json({ foo: 'foopost'});
+    models
+        .User.validateAndBuild(req.body)
+        .then((user) => {
+            res.json(views.user.render(user));
+        }).catch((e) => {
+            console.log(e);
+            // http://www.restapitutorial.com/httpstatuscodes.html
+            res.status(400).json({ error : 'invalid request' });
+        });
 });
 
 waterline.initialize(config, function(err, models) {
