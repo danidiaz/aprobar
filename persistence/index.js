@@ -3,6 +3,8 @@
 // https://github.com/balderdashy/waterline-docs/blob/master/models/data-types-attributes.md
 const Waterline = require('waterline');
 
+const models = require('../models');
+
 function createUserCollection(connectionName) {
     return Waterline.Collection.extend({
         identity: 'user',
@@ -36,17 +38,24 @@ module.exports.createCollections = function(connectionName) {
 // Symbols avoid the risk of collision when adding properties to the Express
 // app.
 module.exports.symbols = { 
-    models : Symbol('waterlineModels'),
+    collections : Symbol('waterlineCollections'),
     connections : Symbol('waterlineConnections')
 };
 
-function addUser(models,user) {
+function createUser(collections,user) {
     // https://github.com/balderdashy/waterline-docs/blob/master/introduction/getting-started.md
-    // This particula model can be passed as-is, but remember other models
+    // This particular model can be passed as-is, but remember other collections
     // might require some massaging. 
-    return models.user.create(user); 
+    return collections.user.create(user); 
+}
+
+function findUserByGuid(collections,guid) {
+    return collections
+                .user.findOneByGuid(guid)
+                .then((user) => new models.User(user));
 }
 
 module.exports.user = {
-    add : addUser 
+    create : createUser, 
+    findByGuid : findUserByGuid 
 }

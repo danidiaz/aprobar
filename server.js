@@ -49,30 +49,46 @@ app.get('/users',(req,res) => {
     res.send('foos');
 });
 
-app.get('/users/:userId',(req,res) => {
-    res.send('foo');
+app.get('/users/:userGuid',(req,res) => {
+    console.log(req.app[persistence.symbols.collections].user);
+    persistence.user.findByGuid(req.app[persistence.symbols.collections],
+                                req.params.userGuid)
+                    .then((user) => {
+                        res.json(views.user.render(user));
+                    }).catch((e) => {
+                        console.log(e);
+                        res.status(400).json({ message : 'Invalid request.' });
+                    });
 });
 
 app.post('/users',(req,res) => {
+    function returnCreated(user) {
+        const link = '/users/'+user.guid;
+        res.status(201)
+           .location(link)
+           .json({ message : 'User created successfully.',
+                   link : link
+                 });
+    }
     models
         .User.validateAndBuild(req.body)
         .then((user) => {
             // https://expressjs.com/en/api.html#req
-            return persistence.user.add(req.app[persistence.symbols.models],user);
-        }).then(() => {
-            res.json({ message : 'User created successfully.' });
+            return persistence.user.create(req.app[persistence.symbols.collections]
+                                          ,user)
+                                   .then(returnCreated);
         }).catch((e) => {
             console.log(e);
             // http://www.restapitutorial.com/httpstatuscodes.html
-            res.status(400).json({ error : 'Invalid request.' });
+            res.status(400).json({ message : 'Invalid request.' });
         });
 });
 
-waterline.initialize(config, function(err, models) {
+waterline.initialize(config, function(err, persistModels) {
 	if(err) throw err;
 
-	app[persistence.symbols.models] = models.collections;
-	app[persistence.symbols.connections] = models.connections;
+	app[persistence.symbols.collections] = persistModels.collections;
+	app[persistence.symbols.connections] = persistModels.connections;
 
 	app.listen(8000, () => {
 		console.log('started!');

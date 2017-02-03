@@ -78,3 +78,8 @@
 
 - Remember to return promises from *thens* when necessary!
 
+- http://stackoverflow.com/questions/19199872/best-practice-for-restful-post-response
+
+- http://stackoverflow.com/questions/14943607/how-to-set-the-location-response-http-header-in-express-framework
+
+
