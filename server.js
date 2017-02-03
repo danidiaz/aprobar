@@ -58,7 +58,7 @@ app.post('/users',(req,res) => {
         .User.validateAndBuild(req.body)
         .then((user) => {
             // https://expressjs.com/en/api.html#req
-            persistence.user.add(req.app[persistence.symbols.models],user);
+            return persistence.user.add(req.app[persistence.symbols.models],user);
         }).then(() => {
             res.json({ message : 'User created successfully.' });
         }).catch((e) => {

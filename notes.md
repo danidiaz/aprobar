@@ -76,4 +76,5 @@
 - Remember that there are named class expressions, just as there are named
   function expressions.
 
+- Remember to return promises from *thens* when necessary!
 
