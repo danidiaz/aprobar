@@ -53,8 +53,15 @@
 - Investigate usefult express middleware like body-parser.
 
 - https://youtu.be/OlapNW9Jc8s?t=1570
-  describes the "Router" approach to separate routes. Use it!
-  https://expressjs.com/en/api.html#router
+  Describes the "Router" approach to separate routes. Use it!
 
+- https://expressjs.com/en/api.html#router
 
+- http://expressjs.com/en/guide/using-middleware.html
+
+- [official middleware](https://github.com/senchalabs/connect?_ga=1.182940708.38143649.1485124457#middleware)
+
+- [third-party middleware](http://expressjs.com/en/resources/middleware.html)
+
+- [best practices](https://expressjs.com/en/advanced/best-practice-performance.html)
 
