@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const Waterline = require('waterline');
 const mongoAdapter = require('sails-mongo');
+const Promise = require('bluebird');
+
 const url = require('url');
 
 const models = require('./models');
@@ -67,78 +69,78 @@ function userLink(req) {
     return user => fullUrl(req,'/users/'+user.guid);
 }
 
-app.get('/users',(req,res) => {
+// Can this be done using standard Express error handling?
+function fallback(promiseReturningHandler) {
+    return (req,res) => promiseReturningHandler(req,res).catch(e => {
+                console.log(e);
+                res.status(500).json(views.message('Unexpected error.'));
+           });
+}
+
+app.get('/users',fallback((req,res) => 
     persistence.user.findAll(req.app[persistence.symbols.collections])
                     .then(users => {
                         res.json(views.hypermediaList(users,userLink(req)));
-                    }).catch(e => {
-                        console.log(e);
-                        res.status(400).json(views.message('Invalid request.'));
-                    });
-});
+                    })
+));
 
-app.get('/users/:userGuid',(req,res) => {
+app.get('/users/:userGuid',fallback((req,res) => 
     persistence.user.findByGuid(req.app[persistence.symbols.collections],
                                 req.params.userGuid)
                     .then(user => {
-                        res.json(views.user.render(user));
-                    }).catch(e => {
-                        console.log(e);
-                        res.status(400).json(views.message('Invalid request.'));
-                    });
-});
+                        if (user) {
+                            res.json(views.user.render(user));
+                        } else {
+                            res.status(404).json(views.message('Not found'));
+                        }
+                    })
+));
 
 // http://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete
-app.delete('/users/:userGuid',(req,res) => {
+app.delete('/users/:userGuid',fallback((req,res) => 
     persistence.user.destroy(req.app[persistence.symbols.collections],req.params.userGuid)
                     .then(() => {
                         res.status(204).json({});
-                    }).catch(e => {
-                        console.log(e);
-                        res.status(400).json(views.message('Invalid request.'));
-                    });
-});
+                    })
+));
 
-app.put('/users/:userGuid',(req,res) => {
+app.put('/users/:userGuid',fallback((req,res) => 
     persistence.user.findByGuid(req.app[persistence.symbols.collections],
                                 req.params.userGuid)
                .then(user => {
-                   const dto = req.body;
-                   if (user.isCompatible(dto)) {
-                       // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
-                       return persistence.user.update(req.app[persistence.symbols.collections]
-                                                     ,user.constructUpdated(dto)) 
-                                         .then(() => res.status(200).json({}));
+                   if (user) {
+                       const dto = req.body;
+                       if (user.isCompatible(dto)) {
+                           // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+                           return persistence.user.update(req.app[persistence.symbols.collections]
+                                                         ,user.constructUpdated(dto)) 
+                                             .then(() => res.status(200).json({}));
+                       } else {
+                           // https://httpstatuses.com/409
+                           res.status(409).json(views.message('Conflicting attributes.'));
+                       }
                    } else {
-                       // https://httpstatuses.com/409
-                       res.status(409).json(views.message('Conflicting attributes.'));
+                       res.status(404).json(views.message('Not found'));
                    }
-               }).catch(e => {
-                    console.log(e);
-                    res.status(400).json(views.message('Invalid request.'));
-               });
-});
+               })
+));
 
-app.post('/users',(req,res) => {
+app.post('/users',fallback((req,res) => {
     function returnCreated(user) {
         const link = userLink(req)(user); 
         res.status(201)
            .location(link)
            .json(views.hypermedia(link));
     }
-    models
+    return models
         .User.validateAndBuild(req.body)
         .then(user => {
             // https://expressjs.com/en/api.html#req
             return persistence.user.create(req.app[persistence.symbols.collections]
                                           ,user)
                                    .then(returnCreated);
-        }).catch(e => {
-            console.log(e);
-            // http://www.restapitutorial.com/httpstatuscodes.html
-            res.status(400).json(views.message('Invalid request.'));
         });
-});
+}));
 
 waterline.initialize(config, function(err, persistModels) {
 	if(err) throw err;

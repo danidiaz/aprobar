@@ -114,11 +114,10 @@ to the README.md instead.
 
 - Do not use effectul default parameters.
 
-- Only use simplified expression arrow syntax with pure functions.
+- Only use simplified expression arrow syntax with pure functions
+  (possible exception: promises)
 
 - http://es6-features.org/#Lexicalthis
-
-- TODO: Implement user PUT.
 
 - TODO: Accurate error meesages (differentiate normal errors from internal errors).
 
@@ -134,5 +133,4 @@ to the README.md instead.
 
 - https://httpstatuses.com/409 
   "Conflicts are most likely to occur in response to a PUT request."
-
 
