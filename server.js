@@ -83,7 +83,7 @@ function fallback(promiseReturningHandler) {
 
 app.get('/users',fallback((req,res) => 
     persistence.user
-        .findAll(req.app[persistence.symbols.collections])
+        .findAll(orm(req))
         .then(users => {
             res.json(views.hypermediaList(users,userLink(req)));
         })
@@ -91,8 +91,7 @@ app.get('/users',fallback((req,res) =>
 
 app.get('/users/:userGuid',fallback((req,res) => 
     persistence.user
-        .findByGuid(req.app[persistence.symbols.collections],
-                    req.params.userGuid)
+        .findByGuid(orm(req),req.params.userGuid)
         .then(user => {
             if (!user) {
                 return res.status(404).json(views.message('Not found'));
@@ -104,7 +103,7 @@ app.get('/users/:userGuid',fallback((req,res) =>
 // http://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete
 app.delete('/users/:userGuid',fallback((req,res) => 
     persistence.user
-        .destroy(req.app[persistence.symbols.collections],req.params.userGuid)
+        .destroy(orm(req),req.params.userGuid)
         .then(() => {
             res.status(204).json({});
         })
@@ -112,8 +111,7 @@ app.delete('/users/:userGuid',fallback((req,res) =>
 
 app.put('/users/:userGuid',fallback((req,res) => 
     persistence.user
-       .findByGuid(req.app[persistence.symbols.collections],
-                        req.params.userGuid)
+       .findByGuid(orm(req),req.params.userGuid)
        .then(user => {
            if (!user) {
                return res.status(404).json(views.message('Not found'));
@@ -123,7 +121,7 @@ app.put('/users/:userGuid',fallback((req,res) =>
                return res.status(409).json(views.message('Conflicting attributes.'));
            }
            // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
-           return persistence.user.update(req.app[persistence.symbols.collections]
+           return persistence.user.update(orm(req)
                                          ,user.constructUpdated(dto)) 
                                   .then(() => res.status(200).json({}));
        })
@@ -132,8 +130,8 @@ app.put('/users/:userGuid',fallback((req,res) =>
 app.post('/users',fallback((req,res) => {
     function checkConflicts(user) {
         return Promise
-            .all([persistence.user.findByName(req.app[persistence.symbols.collections],user.name),
-                 ,persistence.user.findByName(req.app[persistence.symbols.collections],user.email)])
+            .all([persistence.user.findByName(orm(req),user.name),
+                 ,persistence.user.findByName(orm(req),user.email)])
             .then(([r1,r2]) => r1 || r2); 
     }
     return models
@@ -148,7 +146,7 @@ app.post('/users',fallback((req,res) => {
                     return res.status(409).json(views.message('Conflict with existing resource.'));  
                 } 
                 return persistence.user
-                    .create(req.app[persistence.symbols.collections],user)
+                    .create(orm(req),user)
                     .then(() => {
                          const link = userLink(req)(user); 
                          res.status(201).location(link).json(views.hypermedia(link));
