@@ -62,15 +62,15 @@ const app = express();
 // https://github.com/expressjs/body-parser
 app.use(bodyParser.json());
 
-function userLink(req,user) {
-    return fullUrl(req,'/users/'+user.guid);
+function userLink(req) {
+    // Curried function.
+    return user => fullUrl(req,'/users/'+user.guid);
 }
 
 app.get('/users',(req,res) => {
     persistence.user.findAll(req.app[persistence.symbols.collections])
                     .then(users => {
-                        res.json(users.map(user => 
-										   views.hypermedia(userLink(req,user))));
+                        res.json(views.collectionHypermedia(users,userLink(req)));
                     }).catch(e => {
                         console.log(e);
                         res.status(400).json({ message : 'Invalid request.' });
@@ -99,10 +99,9 @@ app.delete('/users/:userGuid',(req,res) => {
                     });
 });
 
-
 app.post('/users',(req,res) => {
     function returnCreated(user) {
-        const link = userLink(req,user); 
+        const link = userLink(req)(user); 
         res.status(201)
            .location(link)
            .json(views.hypermedia(link));

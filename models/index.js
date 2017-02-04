@@ -19,6 +19,14 @@ module.exports.User = class User {
         this.isAdmin = dto.isAdmin;
     }
 
+    isCompatible(dto) {
+        return this.email == dto.email && this.name == dto.name;
+    }
+
+    constructUpdated(dto) {
+        return new User(dto,this.guid);
+    }
+
     // https://www.npmjs.com/package/joi
     static get validator() {
         return joi.object().keys({
@@ -33,7 +41,7 @@ module.exports.User = class User {
 
 	static validateAndBuild(dto,preexistingGUID = null) {
         return this.validate(dto)
-                   .then((dto) => {
+                   .then(dto => {
 		                const guid = preexistingGUID || uuidV4();
                         return new User(dto,guid);
                    });

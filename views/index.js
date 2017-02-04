@@ -12,4 +12,9 @@ module.exports.user = {
     render: renderUser
 };
 
-module.exports.hypermedia = (link) => ({ link });
+const hypermedia = link => ({ link });
+
+module.exports.hypermedia = hypermedia;
+
+module.exports.collectionHypermedia = 
+    (collection,makeLink) => collection.map(item => hypermedia(makeLink(item)));

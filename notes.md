@@ -127,4 +127,11 @@ to the README.md instead.
 
 - TODO: implement tests.
 
+- Put versus post:
+    - http://restcookbook.com/HTTP%20Methods/put-vs-post/
+    - https://knpuniversity.com/screencast/rest/put-versus-post
+    - http://stackoverflow.com/questions/35742358/put-or-post-to-update-resource
+    - http://stackoverflow.com/questions/630453/put-vs-post-in-rest
+
+
 
