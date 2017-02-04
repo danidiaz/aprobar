@@ -1,3 +1,10 @@
+NOTES
+=====
+
+These are notes to myself while writing the app. If you are not me, better go
+to the README.md instead.
+
+
 - Use PUT to update resources (and maybe to choose between alternatives) but
   never force clients to construct a URI, the users must be made aware of the
   position of the resource beforehand.
@@ -88,7 +95,7 @@
 - "found it a bit of a PITA to get the requested url. I can't believe there's not an easier way in express. Should just be req.requested_url"
   http://corpus.hubwiz.com/2/node.js/10183291.html
 
-- Complete DELETE and POST on user.
+- Complete DELETE and PUT on user.
 
 - Improve error messages.
 
@@ -97,5 +104,8 @@
 - Add mocha/chai tests.
 
 - Parameterize the persitence backend?
+
+- Waterline tip: when a "findOne" function doesn't find anything, it returns
+  undefined (which is falsy).
 
 

@@ -92,6 +92,7 @@ app.get('/users/:userGuid',(req,res) => {
                     });
 });
 
+// http://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete
 app.delete('/users/:userGuid',(req,res) => {
     persistence.user.destroy(req.app[persistence.symbols.collections],req.params.userGuid)
                     .then(() => {
