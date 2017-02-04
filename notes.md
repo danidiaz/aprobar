@@ -119,5 +119,12 @@ to the README.md instead.
 
 - http://es6-features.org/#Lexicalthis
 
+- TODO: Implement user PUT.
+
+- TODO: Accurate error meesages (differentiate normal errors from internal errors).
+
+- TODO: refactor routes.
+
+- TODO: implement tests.
 
 
