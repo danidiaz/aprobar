@@ -111,5 +111,13 @@ to the README.md instead.
 - I need automated tests to scale development. Testing more than a few paths by
   hand after each change quickly becomes a bottleneck.
 
+- Perhaps add a separate main.js module to simplify testing?
+
+- Do not use effectul default parameters.
+
+- Only use simplified expression arrow syntax with pure functions.
+
+- http://es6-features.org/#Lexicalthis
+
 
 

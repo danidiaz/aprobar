@@ -36,7 +36,7 @@ const config = (() => {
 		}
 	}
 })();
-persistence.createCollections('mongo').map((collection) => {
+persistence.createCollections('mongo').map(collection => {
 	// https://github.com/balderdashy/waterline-docs/blob/master/introduction/getting-started.md
 	waterline.loadCollection(collection);
 });
@@ -57,10 +57,6 @@ const fullUrl = (function(host,port) {
 	}
 })(aprobar_host,aprobar_port);
 
-function hypermedia(link) {
-	return { link : link };
-}
-
 // https://expressjs.com/en/api.html
 const app = express();
 // https://github.com/expressjs/body-parser
@@ -72,10 +68,10 @@ function userLink(req,user) {
 
 app.get('/users',(req,res) => {
     persistence.user.findAll(req.app[persistence.symbols.collections])
-                    .then((userList) => {
-                        res.json(userList.map((user) => 
-											  hypermedia(userLink(req,user))));
-                    }).catch((e) => {
+                    .then(users => {
+                        res.json(users.map(user => 
+										   views.hypermedia(userLink(req,user))));
+                    }).catch(e => {
                         console.log(e);
                         res.status(400).json({ message : 'Invalid request.' });
                     });
@@ -84,9 +80,9 @@ app.get('/users',(req,res) => {
 app.get('/users/:userGuid',(req,res) => {
     persistence.user.findByGuid(req.app[persistence.symbols.collections],
                                 req.params.userGuid)
-                    .then((user) => {
+                    .then(user => {
                         res.json(views.user.render(user));
-                    }).catch((e) => {
+                    }).catch(e => {
                         console.log(e);
                         res.status(400).json({ message : 'Invalid request.' });
                     });
@@ -97,7 +93,7 @@ app.delete('/users/:userGuid',(req,res) => {
     persistence.user.destroy(req.app[persistence.symbols.collections],req.params.userGuid)
                     .then(() => {
                         res.status(204).json({});
-                    }).catch((e) => {
+                    }).catch(e => {
                         console.log(e);
                         res.status(400).json({ message : 'Invalid request.' });
                     });
@@ -109,16 +105,16 @@ app.post('/users',(req,res) => {
         const link = userLink(req,user); 
         res.status(201)
            .location(link)
-           .json(hypermedia(link));
+           .json(views.hypermedia(link));
     }
     models
         .User.validateAndBuild(req.body)
-        .then((user) => {
+        .then(user => {
             // https://expressjs.com/en/api.html#req
             return persistence.user.create(req.app[persistence.symbols.collections]
                                           ,user)
                                    .then(returnCreated);
-        }).catch((e) => {
+        }).catch(e => {
             console.log(e);
             // http://www.restapitutorial.com/httpstatuscodes.html
             res.status(400).json({ message : 'Invalid request.' });

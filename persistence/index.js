@@ -32,7 +32,7 @@ function createUserCollection(connectionName) {
 }
 
 module.exports.createCollections = function(connectionName) {
-    return [createUserCollection].map((f) => f(connectionName));
+    return [createUserCollection].map(f => f(connectionName));
 };
 
 // Symbols avoid the risk of collision when adding properties to the Express
@@ -50,21 +50,21 @@ function createUser(collections,user) {
 }
 
 function findUserByGuid(collections,guid) {
-    return collections
-                .user.findOneByGuid(guid)
-                .then((user) => new models.User(user,user.guid));
+    return collections.user
+                .findOneByGuid(guid)
+                // propagate not found
+                .then(user => user && new models.User(user,user.guid));
 }
 
 function findAllUsers(collections) {
-    return collections
-                .user.find()
-                .then((userList) => {
-                    return userList.map((user) => new models.User(user,user.guid));
-                });
+    return collections.user
+                .find()
+                .then(users => users.map(user => new models.User(user,user.guid)));
 }
 
 function destroyUserByGuid(collections,guid) {
-    return collections.user.destroy({ guid : guid }); 
+    // http://es6-features.org/#PropertyShorthand
+    return collections.user.destroy({ guid }); 
 }
 
 module.exports.user = {

@@ -12,3 +12,4 @@ module.exports.user = {
     render: renderUser
 };
 
+module.exports.hypermedia = (link) => ({ link : link });
