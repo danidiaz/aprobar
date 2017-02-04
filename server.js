@@ -5,13 +5,12 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const Waterline = require('waterline');
 const mongoAdapter = require('sails-mongo');
-const Promise = require('bluebird');
 
 const url = require('url');
 
-const models = require('./models');
 const persistence = require('./persistence');
 const views = require('./views');
+const routes = require('./routes');
 
 dotenv.config();
 
@@ -59,18 +58,8 @@ const fullUrl = (function(host,port) {
 	}
 })(aprobar_host,aprobar_port);
 
-// https://expressjs.com/en/api.html
-const app = express();
-// https://github.com/expressjs/body-parser
-app.use(bodyParser.json());
-
 function orm(req) {
     return req.app[persistence.symbols.collections];
-}
-
-function userLink(req) {
-    // Curried function.
-    return user => fullUrl(req,'/users/'+user.guid);
 }
 
 // Can this be done using standard Express error handling?
@@ -81,85 +70,18 @@ function fallback(promiseReturningHandler) {
     });
 }
 
-app.get('/users',fallback((req,res) => 
-    orm(req).user
-        .findAll()
-        .then(users => {
-            res.json(views.hypermediaList(users,userLink(req)));
-        })
-));
-
-app.get('/users/:userGuid',fallback((req,res) => 
-    orm(req).user
-        .findByGuid(req.params.userGuid)
-        .then(user => {
-            if (!user) {
-                return res.status(404).json(views.message('Not found'));
-            } 
-            res.json(views.user.render(user));
-        })
-));
-
-// http://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete
-app.delete('/users/:userGuid',fallback((req,res) => 
-    orm(req).user
-        .destroy(req.params.userGuid)
-        .then(() => {
-            res.status(204).json({});
-        })
-));
-
-app.put('/users/:userGuid',fallback((req,res) => 
-    orm(req).user
-       .findByGuid(req.params.userGuid)
-       .then(user => {
-           if (!user) {
-               return res.status(404).json(views.message('Not found'));
-           }
-           const dto = req.body;
-           if (!user.isCompatible(dto)) {
-               return res.status(409).json(views.message('Conflicting attributes.'));
-           }
-           // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
-           return orm(req).user
-                    .update(user.constructUpdated(dto)) 
-                    .then(() => res.status(200).json({}));
-       })
-));
-
-app.post('/users',fallback((req,res) => {
-    function checkConflicts(user) {
-        return Promise
-            .all([orm(req).user.findByName(user.name),
-                 ,orm(req).user.findByName(user.email)])
-            .then(([r1,r2]) => r1 || r2); 
-    }
-    return models
-        .User.validateAndBuild(req.body)
-        .then(user => {
-            // Did we pass validation?
-            if (!user) {
-                return res.status(400).json(views.message('Bad request.'));
-            }
-            return checkConflicts(user).then(conflicts => {
-                if (conflicts) {
-                    return res.status(409).json(views.message('Conflict with existing resource.'));  
-                } 
-                return orm(req)
-                    .create(user)
-                    .then(() => {
-                         const link = userLink(req)(user); 
-                         res.status(201).location(link).json(views.hypermedia(link));
-                    });
-            });
-        });
-}));
-
 waterline.initialize(config, function(err, waterlineModels) {
 	if(err) throw err;
 
+    // https://expressjs.com/en/api.html
+    const app = express();
+
 	app[persistence.symbols.collections] = 
         persistence.makeORM(waterlineModels.collections);
+
+    // https://github.com/expressjs/body-parser
+    app.use(bodyParser.json());
+    app.use('/users',routes.users(orm,fallback,fullUrl));
 
 	app.listen(aprobar_port, () => {
 		console.log('started!');

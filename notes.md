@@ -136,4 +136,6 @@ to the README.md instead.
 
 - return from failures early!
 
+- By moving the handlers to routes modules, the server.js is freed from a
+  dependency on models (and on bluebird).
 
