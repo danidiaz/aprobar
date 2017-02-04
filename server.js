@@ -57,20 +57,24 @@ const fullUrl = (function(host,port) {
 	}
 })(aprobar_host,aprobar_port);
 
+function hypermedia(link) {
+	return { link : link };
+}
+
 // https://expressjs.com/en/api.html
 const app = express();
 // https://github.com/expressjs/body-parser
 app.use(bodyParser.json());
 
-function makeUserLink(req,user) {
-	return { link : fullUrl(req,'/users/'+user.guid) };
+function userLink(req,user) {
+    return fullUrl(req,'/users/'+user.guid);
 }
 
 app.get('/users',(req,res) => {
     persistence.user.findAll(req.app[persistence.symbols.collections])
                     .then((userList) => {
                         res.json(userList.map((user) => 
-											  makeUserLink(req,user)));
+											  hypermedia(userLink(req,user))));
                     }).catch((e) => {
                         console.log(e);
                         res.status(400).json({ message : 'Invalid request.' });
@@ -90,11 +94,10 @@ app.get('/users/:userGuid',(req,res) => {
 
 app.post('/users',(req,res) => {
     function returnCreated(user) {
+        const link = userLink(req,user); 
         res.status(201)
            .location(link)
-           .json({ message : 'User created successfully.',
-                   link : makeUserLink(req,user)
-                 });
+           .json(hypermedia(link));
     }
     models
         .User.validateAndBuild(req.body)
