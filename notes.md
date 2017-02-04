@@ -134,3 +134,6 @@ to the README.md instead.
 - https://httpstatuses.com/409 
   "Conflicts are most likely to occur in response to a PUT request."
 
+- return from failures early!
+
+

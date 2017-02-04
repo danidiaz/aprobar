@@ -38,8 +38,7 @@ module.exports.createCollections = function(connectionName) {
 // Symbols avoid the risk of collision when adding properties to the Express
 // app.
 module.exports.symbols = { 
-    collections : Symbol('waterlineCollections'),
-    connections : Symbol('waterlineConnections')
+    collections : Symbol('waterlineCollections')
 };
 
 function createUser(collections,user) {
