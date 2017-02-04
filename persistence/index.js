@@ -67,9 +67,16 @@ function destroyUserByGuid(collections,guid) {
     return collections.user.destroy({ guid }); 
 }
 
+function updateUser(collections,user) {
+    // This particular model can be passed as-is, but remember other collections
+    // might require some massaging. 
+    return collections.user.update({ guid: user.guid }, user);
+}
+
 module.exports.user = {
     create : createUser, 
     findByGuid : findUserByGuid,
 	findAll : findAllUsers,
-    destroy : destroyUserByGuid
+    destroy : destroyUserByGuid,
+    update: updateUser
 }

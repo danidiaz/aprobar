@@ -70,10 +70,10 @@ function userLink(req) {
 app.get('/users',(req,res) => {
     persistence.user.findAll(req.app[persistence.symbols.collections])
                     .then(users => {
-                        res.json(views.collectionHypermedia(users,userLink(req)));
+                        res.json(views.hypermediaList(users,userLink(req)));
                     }).catch(e => {
                         console.log(e);
-                        res.status(400).json({ message : 'Invalid request.' });
+                        res.status(400).json(views.message('Invalid request.'));
                     });
 });
 
@@ -84,7 +84,7 @@ app.get('/users/:userGuid',(req,res) => {
                         res.json(views.user.render(user));
                     }).catch(e => {
                         console.log(e);
-                        res.status(400).json({ message : 'Invalid request.' });
+                        res.status(400).json(views.message('Invalid request.'));
                     });
 });
 
@@ -95,8 +95,28 @@ app.delete('/users/:userGuid',(req,res) => {
                         res.status(204).json({});
                     }).catch(e => {
                         console.log(e);
-                        res.status(400).json({ message : 'Invalid request.' });
+                        res.status(400).json(views.message('Invalid request.'));
                     });
+});
+
+app.put('/users/:userGuid',(req,res) => {
+    persistence.user.findByGuid(req.app[persistence.symbols.collections],
+                                req.params.userGuid)
+               .then(user => {
+                   const dto = req.body;
+                   if (user.isCompatible(dto)) {
+                       // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+                       return persistence.user.update(req.app[persistence.symbols.collections]
+                                                     ,user.constructUpdated(dto)) 
+                                         .then(() => res.status(200).json({}));
+                   } else {
+                       // https://httpstatuses.com/409
+                       res.status(409).json(views.message('Conflicting attributes.'));
+                   }
+               }).catch(e => {
+                    console.log(e);
+                    res.status(400).json(views.message('Invalid request.'));
+               });
 });
 
 app.post('/users',(req,res) => {
@@ -116,7 +136,7 @@ app.post('/users',(req,res) => {
         }).catch(e => {
             console.log(e);
             // http://www.restapitutorial.com/httpstatuscodes.html
-            res.status(400).json({ message : 'Invalid request.' });
+            res.status(400).json(views.message('Invalid request.'));
         });
 });
 

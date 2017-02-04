@@ -1,9 +1,8 @@
 NOTES
 =====
 
-These are notes to myself while writing the app. If you are not me, better go
+These are notes to myself while writing the app. If you are not me, better turn
 to the README.md instead.
-
 
 - Use PUT to update resources (and maybe to choose between alternatives) but
   never force clients to construct a URI, the users must be made aware of the
@@ -133,5 +132,7 @@ to the README.md instead.
     - http://stackoverflow.com/questions/35742358/put-or-post-to-update-resource
     - http://stackoverflow.com/questions/630453/put-vs-post-in-rest
 
+- https://httpstatuses.com/409 
+  "Conflicts are most likely to occur in response to a PUT request."
 
 

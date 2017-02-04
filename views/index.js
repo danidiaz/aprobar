@@ -13,8 +13,10 @@ module.exports.user = {
 };
 
 const hypermedia = link => ({ link });
-
 module.exports.hypermedia = hypermedia;
 
-module.exports.collectionHypermedia = 
+const message = message => ({ message });
+module.exports.message = message;
+
+module.exports.hypermediaList = 
     (collection,makeLink) => collection.map(item => hypermedia(makeLink(item)));
