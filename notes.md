@@ -150,6 +150,7 @@ to the README.md instead.
     - https://semaphoreci.com/community/tutorials/getting-started-with-node-js-and-mocha
     - https://mochajs.org/
 
+- TODO: mention in the README that security and transactions are left pending.
 
 
 
