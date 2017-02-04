@@ -139,3 +139,20 @@ to the README.md instead.
 - By moving the handlers to routes modules, the server.js is freed from a
   dependency on models (and on bluebird).
 
+- Resources on testing REST APIs using Mocha and Chai:
+    - https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai
+    - https://thewayofcode.wordpress.com/2013/04/21/how-to-build-and-test-rest-api-with-nodejs-express-mocha/
+    - https://codeforgeek.com/2015/07/unit-testing-nodejs-application-using-mocha/
+    - http://mherman.org/blog/2016/09/12/testing-node-and-express/#.WJYl3vnhDcs
+    - https://glebbahmutov.com/blog/how-to-correctly-unit-test-express-server/
+    - https://developers.redhat.com/blog/2016/03/15/test-driven-development-for-building-apis-in-node-js-and-express/
+    - https://labs.chiedo.com/blog/testing-a-node-js-rest-api-with-mocha-and-chai/
+    - https://semaphoreci.com/community/tutorials/getting-started-with-node-js-and-mocha
+    - https://mochajs.org/
+
+
+
+
+
+
+
