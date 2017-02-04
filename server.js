@@ -82,16 +82,16 @@ function fallback(promiseReturningHandler) {
 }
 
 app.get('/users',fallback((req,res) => 
-    persistence.user
-        .findAll(orm(req))
+    orm(req).user
+        .findAll()
         .then(users => {
             res.json(views.hypermediaList(users,userLink(req)));
         })
 ));
 
 app.get('/users/:userGuid',fallback((req,res) => 
-    persistence.user
-        .findByGuid(orm(req),req.params.userGuid)
+    orm(req).user
+        .findByGuid(req.params.userGuid)
         .then(user => {
             if (!user) {
                 return res.status(404).json(views.message('Not found'));
@@ -102,16 +102,16 @@ app.get('/users/:userGuid',fallback((req,res) =>
 
 // http://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete
 app.delete('/users/:userGuid',fallback((req,res) => 
-    persistence.user
-        .destroy(orm(req),req.params.userGuid)
+    orm(req).user
+        .destroy(req.params.userGuid)
         .then(() => {
             res.status(204).json({});
         })
 ));
 
 app.put('/users/:userGuid',fallback((req,res) => 
-    persistence.user
-       .findByGuid(orm(req),req.params.userGuid)
+    orm(req).user
+       .findByGuid(req.params.userGuid)
        .then(user => {
            if (!user) {
                return res.status(404).json(views.message('Not found'));
@@ -121,17 +121,17 @@ app.put('/users/:userGuid',fallback((req,res) =>
                return res.status(409).json(views.message('Conflicting attributes.'));
            }
            // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
-           return persistence.user.update(orm(req)
-                                         ,user.constructUpdated(dto)) 
-                                  .then(() => res.status(200).json({}));
+           return orm(req).user
+                    .update(user.constructUpdated(dto)) 
+                    .then(() => res.status(200).json({}));
        })
 ));
 
 app.post('/users',fallback((req,res) => {
     function checkConflicts(user) {
         return Promise
-            .all([persistence.user.findByName(orm(req),user.name),
-                 ,persistence.user.findByName(orm(req),user.email)])
+            .all([orm(req).user.findByName(user.name),
+                 ,orm(req).user.findByName(user.email)])
             .then(([r1,r2]) => r1 || r2); 
     }
     return models
@@ -145,8 +145,8 @@ app.post('/users',fallback((req,res) => {
                 if (conflicts) {
                     return res.status(409).json(views.message('Conflict with existing resource.'));  
                 } 
-                return persistence.user
-                    .create(orm(req),user)
+                return orm(req)
+                    .create(user)
                     .then(() => {
                          const link = userLink(req)(user); 
                          res.status(201).location(link).json(views.hypermedia(link));
@@ -155,10 +155,11 @@ app.post('/users',fallback((req,res) => {
         });
 }));
 
-waterline.initialize(config, function(err, persistModels) {
+waterline.initialize(config, function(err, waterlineModels) {
 	if(err) throw err;
 
-	app[persistence.symbols.collections] = persistModels.collections;
+	app[persistence.symbols.collections] = 
+        persistence.makeORM(waterlineModels.collections);
 
 	app.listen(aprobar_port, () => {
 		console.log('started!');
