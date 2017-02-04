@@ -92,6 +92,17 @@ app.get('/users/:userGuid',(req,res) => {
                     });
 });
 
+app.delete('/users/:userGuid',(req,res) => {
+    persistence.user.destroy(req.app[persistence.symbols.collections],req.params.userGuid)
+                    .then(() => {
+                        res.status(204).json({});
+                    }).catch((e) => {
+                        console.log(e);
+                        res.status(400).json({ message : 'Invalid request.' });
+                    });
+});
+
+
 app.post('/users',(req,res) => {
     function returnCreated(user) {
         const link = userLink(req,user); 

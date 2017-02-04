@@ -63,8 +63,13 @@ function findAllUsers(collections) {
                 });
 }
 
+function destroyUserByGuid(collections,guid) {
+    return collections.user.destroy({ guid : guid }); 
+}
+
 module.exports.user = {
     create : createUser, 
     findByGuid : findUserByGuid,
-	findAll : findAllUsers
+	findAll : findAllUsers,
+    destroy : destroyUserByGuid
 }

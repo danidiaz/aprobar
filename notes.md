@@ -88,4 +88,14 @@
 - "found it a bit of a PITA to get the requested url. I can't believe there's not an easier way in express. Should just be req.requested_url"
   http://corpus.hubwiz.com/2/node.js/10183291.html
 
+- Complete DELETE and POST on user.
+
+- Improve error messages.
+
+- Refactor into separate routes.
+
+- Add mocha/chai tests.
+
+- Parameterize the persitence backend?
+
 
