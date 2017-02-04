@@ -39,11 +39,12 @@ module.exports.User = class User {
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Static_methods
 	static validate(dto) { return validateWith(this.validator,dto); }
 
+    // Promise returns null if validation fails. Downstream should detect it.
 	static validateAndBuild(dto,preexistingGUID = null) {
         return this.validate(dto)
                    .then(dto => {
 		                const guid = preexistingGUID || uuidV4();
                         return new User(dto,guid);
-                   });
+                   }).catch(e => null);
 	}
 };

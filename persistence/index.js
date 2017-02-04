@@ -49,11 +49,21 @@ function createUser(collections,user) {
     return collections.user.create(user); 
 }
 
+function userFound(promise) {
+    // propagate not found
+    return promise.then(user => user && new models.User(user,user.guid));
+}
+
 function findUserByGuid(collections,guid) {
-    return collections.user
-                .findOneByGuid(guid)
-                // propagate not found
-                .then(user => user && new models.User(user,user.guid));
+    return userFound(collections.user.findOneByGuid(guid));
+}
+
+function findUserByName(collections,name) {
+    return userFound(collections.user.findOneByName(name));
+}
+
+function findUserByEmail(collections,email) {
+    return userFound(collections.user.findOneByEmail(email));
 }
 
 function findAllUsers(collections) {
@@ -76,6 +86,8 @@ function updateUser(collections,user) {
 module.exports.user = {
     create : createUser, 
     findByGuid : findUserByGuid,
+    findByName : findUserByName,
+    findByEmail : findUserByEmail,
 	findAll : findAllUsers,
     destroy : destroyUserByGuid,
     update: updateUser

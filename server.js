@@ -135,10 +135,24 @@ app.post('/users',fallback((req,res) => {
     return models
         .User.validateAndBuild(req.body)
         .then(user => {
-            // https://expressjs.com/en/api.html#req
-            return persistence.user.create(req.app[persistence.symbols.collections]
-                                          ,user)
-                                   .then(returnCreated);
+            // If we have a potential user model constructed
+            if (user) {
+                // Do we have any conflicting records?
+                return Promise.all([persistence.user.findByName(req.app[persistence.symbols.collections],user.name),
+                                   ,persistence.user.findByName(req.app[persistence.symbols.collections],user.email)
+                                  ]).then(([r1,r2]) => {
+                                      if (r1 || r2) {
+                                        res.status(409).json(views.message('Conflict with existing resource.'));
+                                      } else {
+                                        // https://expressjs.com/en/api.html#req
+                                        return persistence.user.create(req.app[persistence.symbols.collections]
+                                                                      ,user)
+                                                               .then(returnCreated);
+                                      }
+                                  });
+            } else {
+                res.status(400).json(views.message('Bad request.'));
+            }
         });
 }));
 
