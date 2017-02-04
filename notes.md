@@ -106,6 +106,10 @@ to the README.md instead.
 - Parameterize the persitence backend?
 
 - Waterline tip: when a "findOne" function doesn't find anything, it returns
-  undefined (which is falsy).
+  undefined (which is falsy). Propagate the undefined upwards.
+
+- I need automated tests to scale development. Testing more than a few paths by
+  hand after each change quickly becomes a bottleneck.
+
 
 
