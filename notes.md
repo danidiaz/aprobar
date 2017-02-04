@@ -152,8 +152,17 @@ to the README.md instead.
 
 - TODO: mention in the README that security and transactions are left pending.
 
+- "Passing arrow functions (“lambdas”) to Mocha is discouraged. Due to the
+lexical binding of this, such functions are unable to access the Mocha
+context." http://mochajs.org/#getting-started
 
+- "Testing a restful api with mocha and chai."
+https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai
 
+- "it’s straightforward to generate your tests dynamically. No special syntax is required"
 
+- The main combinators of Mocha seem to be "describe" (which can be nested) and
+"it". Example of nested "describe":
+http://stackoverflow.com/questions/28546182/why-cant-nested-describe-blocks-see-vars-defined-in-outer-blocks
 
 

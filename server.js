@@ -70,20 +70,21 @@ function fallback(promiseReturningHandler) {
     });
 }
 
+// https://expressjs.com/en/api.html
+const app = express();
+// https://github.com/expressjs/body-parser
+app.use(bodyParser.json());
+app.use('/users',routes.users(orm,fallback,fullUrl));
+
 waterline.initialize(config, function(err, waterlineModels) {
 	if(err) throw err;
 
-    // https://expressjs.com/en/api.html
-    const app = express();
-
 	app[persistence.symbols.collections] = 
         persistence.makeORM(waterlineModels.collections);
-
-    // https://github.com/expressjs/body-parser
-    app.use(bodyParser.json());
-    app.use('/users',routes.users(orm,fallback,fullUrl));
 
 	app.listen(aprobar_port, () => {
 		console.log('started!');
 	});
 });
+
+module.exports = app; // for testing
