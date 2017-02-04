@@ -4,7 +4,8 @@
   "description": "Test management tool with a REST API.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "nukedb": ". ./.env && mongo $APROBAR_MONGO_DB --port $APROBAR_MONGO_PORT --host $APROBAR_MONGO_HOST --eval \"db.dropDatabase()\"",
+    "test": "npm run nukedb && . ./.env && mocha",
     "demon": "nodemon server.js"
   },
   "repository": {
