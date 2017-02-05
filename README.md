@@ -1,10 +1,28 @@
 # Overview
 
-This API was going to be more extensive, but due to time pressure it currently
-consists in a set of endpoints for perfroming CRUD operations on a collection
-of **user** resources.
+This API was going to be more extensive, but due to time pressure, at this
+moment it merely consists in a set of endpoints for perfroming CRUD operations
+on a collection of **user** resources.
 
-# Avoiding a server singleton
+# Design decisions
+
+## "Persistence ignorance" and the repository pattern
+
+I tried to achieve ["persistence
+ignorance"](http://stackoverflow.com/questions/905498/what-are-the-benefits-of-persistence-ignorance)
+for the entities in my model. That means they should not depend in any way on
+the underlying persistence mechanism (this was brought about because I was
+undecided for a while between Monogoose & Waterline). 
+
+One consequence of this approach is that it becomes the model's responsability
+to generate and assign globally unique identifiers (GUIDs) instead of
+delegating the task to the persistence layer. 
+
+The **persistence** module implements the [repository
+pattern](https://msdn.microsoft.com/en-us/library/ff649690.aspx), hiding the
+details of the Waterline orm.
+
+## Avoiding a server singleton
 
 Initially I read the configuration and started the server in an inflexible
 manner. The Express Application instance was basically a singleton.

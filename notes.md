@@ -212,3 +212,7 @@ fact."
 
 - chai-http provides a way to perform tests against an express Application
 object, and also a few extra assertions for dealing with responses.
+
+- [to.deep.equal](http://chaijs.com/api/bdd/#method_deep) is an alternative to to.jsonEqual.
+  
+  

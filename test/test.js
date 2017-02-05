@@ -4,6 +4,7 @@ const Promise = require('bluebird');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
+const chaiJsonEqual = require('chai-json-equal');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -11,6 +12,7 @@ const configurations = require('../configurations');
 const server = require('../server');
 
 chai.use(chaiHttp);
+chai.use(chaiJsonEqual);
 
 server(
     configurations.waterlineConf,
@@ -27,6 +29,7 @@ function tests(app) {
                     .get('/users')	
                     .then(function (res) {
                         expect(res).to.have.status(200);
+                        expect(res.body).to.jsonEqual([]);
                     });
 			});
 		});
