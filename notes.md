@@ -159,7 +159,7 @@ context." http://mochajs.org/#getting-started
 - "Testing a restful api with mocha and chai."
 https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai
 
-- "it’s straightforward to generate your tests dynamically. No special syntax is required".
+- ["it’s straightforward to generate your tests dynamically. No special syntax is required"](https://mochajs.org/#dynamically-generating-tests)
 
 - The main combinators of Mocha seem to be "describe" (which can be nested) and
 "it". Example of nested "describe":
@@ -216,4 +216,8 @@ object, and also a few extra assertions for dealing with responses.
 - [to.deep.equal](http://chaijs.com/api/bdd/#method_deep) is an alternative to to.jsonEqual.
   
 - How to pass a json body in chai-http? Ah, it's done with "send".
+
+- The current version of chai-http is not able to test for bad requests. Sucks.
+  https://github.com/chaijs/chai-http/issues/75
+
 
