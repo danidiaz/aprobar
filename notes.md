@@ -215,4 +215,5 @@ object, and also a few extra assertions for dealing with responses.
 
 - [to.deep.equal](http://chaijs.com/api/bdd/#method_deep) is an alternative to to.jsonEqual.
   
-  
+- How to pass a json body in chai-http? Ah, it's done with "send".
+
