@@ -9,9 +9,31 @@ The avaliable endpoints are as following
 - {GET,POST} /users
 - {GET,PUT,DELETE} /users/:userGuid
 
-# Example curls
+## Example curls
 
+To get the created users:
 
+```
+curl http://host:port/users
+```
+
+To create a new user:
+
+```
+curl -H "Content-Type: application/json" -X POST -d '{ "name" : "Rodolfo9", "email": "rodolfo9@someemailprovider.com", "isAdmin" : true }' http://host:port/users
+```
+
+This sends the request body
+
+```
+{   
+    "name" : "Rodolfo9",
+    "email": "rodolfo9@someemailprovider.com",
+    "isAdmin" : true
+}
+```
+
+Trying to make a post with the same name or email will fail, as they must be unique.
 
 # Design decisions
 
