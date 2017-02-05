@@ -165,4 +165,7 @@ https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai
 "it". Example of nested "describe":
 http://stackoverflow.com/questions/28546182/why-cant-nested-describe-blocks-see-vars-defined-in-outer-blocks
 
+- Chai seems to have three assertion styles. Vanilla "assert" style is not
+chainable. "should" style seems like too much magic.
+
 
