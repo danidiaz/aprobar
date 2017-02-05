@@ -4,6 +4,15 @@ This API was going to be more extensive, but due to time pressure, at this
 moment it merely consists in a set of endpoints for perfroming CRUD operations
 on a collection of **user** resources.
 
+The avaliable endpoints are as following
+
+- {GET,POST} /users
+- {GET,PUT,DELETE} /users/:userGuid
+
+# Example curls
+
+
+
 # Design decisions
 
 ## "Persistence ignorance" and the repository pattern

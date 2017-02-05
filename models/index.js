@@ -1,5 +1,10 @@
 'use strict'
 
+// This module validates data representations coming from the REST interface
+// and constructs model entities from then.
+//
+// It also has the resposibility of assigning globally unique identifiers (GUIDs) to the created entities.
+
 const joi = require('joi');
 const uuidV4 = require('uuid/v4');
 const Promise = require('bluebird');
