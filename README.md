@@ -35,6 +35,28 @@ This sends the request body
 
 Trying to make a post with the same name or email will fail, as they must be unique.
 
+To inspect a created user:
+
+```
+curl http://host:port/users/bfa562b9-dc1d-4d83-b6c8-a4908199f1fa
+```
+
+To update the "isAdmin" field of an existing user, we PUT the whole
+representation of the user with the "isAdmin" field changed:
+
+```
+curl -H "Content-Type: application/json" -X PUT -d '{ "name" : "Rodolfo9", "email": "rodolfo9@someemailprovider.com", "isAdmin" : false }' http://host:port/users/bfa562b9-dc1d-4d83-b6c8-a4908199f1fa
+```
+
+The "name" and "email" fields can't be changed, trying to do that in a PUT will
+result in an error.
+
+To delete a created user:
+
+```
+curl -X DELETE http://host:port/users/bfa562b9-dc1d-4d83-b6c8-a4908199f1fa
+```
+
 # Design decisions
 
 ## "Persistence ignorance" and the repository pattern
