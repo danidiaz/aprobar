@@ -33,7 +33,7 @@ This sends the request body
 }
 ```
 
-Trying to make a post with the same name or email will fail, as they must be unique.
+Trying to make anoher POST with the same name or email will fail, as they must be unique.
 
 To inspect a created user:
 
@@ -51,7 +51,7 @@ curl -H "Content-Type: application/json" -X PUT -d '{ "name" : "Rodolfo9", "emai
 The "name" and "email" fields can't be changed, trying to do that in a PUT will
 result in an error.
 
-To delete a created user:
+To delete a user:
 
 ```
 curl -X DELETE http://host:port/users/bfa562b9-dc1d-4d83-b6c8-a4908199f1fa
@@ -97,6 +97,18 @@ the server is finally up and running.
 
 This way the server module has no unwanted side-effects, and the importing
 modules can configure the server and control when it starts.
+
+## Environment-based configuration
+
+(This is more of a deployment pattern than a sotware one.) 
+
+I tried to follow
+the principles of the "12-factor app", in particular [the one about storing
+appliation configuration in environment
+variables](https://12factor.net/config).
+
+That said, I used the [dotenv](https://www.npmjs.com/package/dotenv) package
+during development.
 
 # Testing strategy
 
