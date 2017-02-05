@@ -1,5 +1,6 @@
 'use strict'
 
+const Promise = require('bluebird');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
@@ -20,14 +21,13 @@ server(
 function tests(app) {
 	describe('Users', function() {
 		describe('emptyUsers', function() {
-			it('Empty list of users at the beginning.',function(done) {
-				chai.request(app)
-					.get('/users')	
-					.end(function(err,res) {
-						if (err) throw err;
-						expect(res).to.have.status(200);
-						done();		
-					});
+			it('Empty list of users at the beginning.',function() {
+				return chai
+                    .request(app)
+                    .get('/users')	
+                    .then(function (res) {
+                        expect(res).to.have.status(200);
+                    });
 			});
 		});
 	});

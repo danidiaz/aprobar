@@ -183,4 +183,32 @@ my problem with delayed initialization.
 - Is the package.json "config" section an alternative to dotenv?
   https://docs.npmjs.com/misc/scripts
 
-- "Another cool feature about npm is that any script that can be executed also has a set of pre- and post- hooks, which are simply definable in the scripts object." https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/
+- "Another cool feature about npm is that any script that can be executed also
+  has a set of pre- and post- hooks, which are simply definable in the scripts
+  object." https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/
+
+- https://www.npmjs.com/package/chai-as-promised
+  But chai-http is also promise-enabled. What is the difference?
+  It seems that chai-as-promised allows you to perform assertions on the
+  promises *directly*, without having to extract their results with then. 
+
+- https://www.terlici.com/2015/09/21/node-express-controller-testing.html
+
+- Remember: when using mocha with promises, the test callback doesn't pass a
+  "done".
+ 
+- "In general, if you want to test promise-based code in Mocha, you should rely
+on the fact that Mocha itself can handle promises already. You shouldn't use
+done(), but instead, return a promise from your test. Mocha will then catch any
+errors itself."
+  "The "Unhandled promise rejection" is also caused by the failed assertion,
+because if an error is thrown in a catch() handler, and there isn't a
+subsequent catch() handler, the error will get swallowed (as explained in this
+article). The UnhandledPromiseRejectionWarning warning is alerting you to this
+fact."
+	http://stackoverflow.com/a/39718611/1364288
+  
+- https://www.joyent.com/node-js/production/design/errors
+
+- chai-http provides a way to perform tests against an express Application
+object, and also a few extra assertions for dealing with responses.
