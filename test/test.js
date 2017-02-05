@@ -89,7 +89,7 @@ function tests(app) {
         });
     }
 
-	describe('Users', function() {
+    describe('Users', function() {
         it('Empty list of users at the beginning.',() => testEmptyUserCollection());
         it('Insert and delete user.',() => testInsertAndDeleteUser(validUser));
         it('Insert and modify user.',() => testInsertAndModifyUser(validUser));
