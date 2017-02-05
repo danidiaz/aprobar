@@ -168,4 +168,16 @@ http://stackoverflow.com/questions/28546182/why-cant-nested-describe-blocks-see-
 - Chai seems to have three assertion styles. Vanilla "assert" style is not
 chainable. "should" style seems like too much magic.
 
+- https://mochajs.org/#asynchronous-code
+
+- Delayed root suite https://mochajs.org/#delayed-root-suite This might solve
+my problem with delayed initialization.
+
+- It seems that the [supertest]() library doesn't suffer from the avobe problem,
+  but stick to mocha/chai anyway.
+
+- ["Test your REST api using Mocha and supertest"](https://codeforgeek.com/2015/07/unit-testing-nodejs-application-using-mocha/).
+
+- https://www.npmjs.com/package/supertest
+
 
