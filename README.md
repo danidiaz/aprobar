@@ -14,7 +14,7 @@ for the entities in my model. That means they should not depend in any way on
 the underlying persistence mechanism (this was brought about because I was
 undecided for a while between Monogoose & Waterline). 
 
-One consequence of this approach is that it becomes the model's responsability
+One consequence of this approach is that it becomes the model's responsibility
 to generate and assign globally unique identifiers (GUIDs) instead of
 delegating the task to the persistence layer. 
 
