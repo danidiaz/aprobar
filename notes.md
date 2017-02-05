@@ -159,7 +159,7 @@ context." http://mochajs.org/#getting-started
 - "Testing a restful api with mocha and chai."
 https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai
 
-- "it’s straightforward to generate your tests dynamically. No special syntax is required"
+- "it’s straightforward to generate your tests dynamically. No special syntax is required".
 
 - The main combinators of Mocha seem to be "describe" (which can be nested) and
 "it". Example of nested "describe":
@@ -180,4 +180,7 @@ my problem with delayed initialization.
 
 - https://www.npmjs.com/package/supertest
 
+- Is the package.json "config" section an alternative to dotenv?
+  https://docs.npmjs.com/misc/scripts
 
+- "Another cool feature about npm is that any script that can be executed also has a set of pre- and post- hooks, which are simply definable in the scripts object." https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/
