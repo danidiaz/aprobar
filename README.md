@@ -45,6 +45,17 @@ the server is finally up and running.
 This way the server module has no unwanted side-effects, and the importing
 modules can configure the server and control when it starts.
 
+# Testing strategy
+
+I wrote integration tests for the CRUD endpoints using mocha, chai, and
+[chai-http](https://www.npmjs.com/package/chai-http) for the requests.
+
+I encountered an [annoying
+limitation](https://github.com/chaijs/chai-http/issues/75) in chai-http: it is
+not possible to test expected failure codes. This prevented me from testing
+important behaviour like rejection of malformed inputs when creating or
+updating resources.
+
 # Pending issues
 
 ## Transactions
