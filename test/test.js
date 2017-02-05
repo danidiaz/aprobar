@@ -21,19 +21,22 @@ server(
 );
 
 function tests(app) {
+    function testEmptyUserCollection() {
+        return chai
+            .request(app)
+            .get('/users')	
+            .then(function (res) {
+                expect(res).to.have.status(200);
+                expect(res.body).to.jsonEqual([]);
+            });
+    }
+
 	describe('Users', function() {
 		describe('emptyUsers', function() {
-			it('Empty list of users at the beginning.',function() {
-				return chai
-                    .request(app)
-                    .get('/users')	
-                    .then(function (res) {
-                        expect(res).to.have.status(200);
-                        expect(res.body).to.jsonEqual([]);
-                    });
-			});
-		});
-	});
+			it('Empty list of users at the beginning.',testEmptyUserCollection);
+        });
+    });
     run();
 }
+
 
